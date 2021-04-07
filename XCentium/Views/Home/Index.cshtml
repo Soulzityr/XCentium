@@ -1,0 +1,42 @@
+﻿@model XCentium.Models.FormModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Input an Absolute URL</p>
+    <form method="post" asp-controller="Home" asp-action="Index">
+        <input asp-for="UserInputUrl" placeholder="URL goes here" />
+        <input type="submit" />
+    </form>
+    @if(Model != null && Model.ErrorText != null)
+    {
+        <span>@Model.ErrorText</span>
+    }
+    @if (Model != null && Model.Words != null && Model.Words.Count > 0)
+    {
+        <h1>Word Counts</h1>
+        <h3>@Model.TotalWordCount words</h3>
+        <ul class="list-group">
+            @foreach (var word in Model.Words)
+            {
+                <li class="list-group-item">@word.Word - @word.Count</li>
+            }
+        </ul>
+    }
+    @if (Model != null && Model.Images != null && Model.Images.Count > 0)
+    {
+        <h1>Image Carousel</h1>
+        <div id="carousel" class="carousel slide" data-ride="carousel" data-interval="1000" style="width:500px; height: 500px;">
+            <div class="carousel-inner">
+                @foreach (var imageUrl in Model.Images)
+                {
+                    <div class="carousel-item @(imageUrl == Model.Images.First() ? "active" : "")">
+                        <img src="@imageUrl" alt="image">
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
